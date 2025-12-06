@@ -8,8 +8,8 @@
   "files": {
     "ignoreUnknown": false,
     "includes": [
-      "__test__/**",
-      "**",
+      "**/*.spec.ts",
+      "!*.d.ts",
       "!target",
       "!index.js",
       "!package-template.wasi-browser.js",

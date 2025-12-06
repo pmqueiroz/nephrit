@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -7,9 +7,9 @@ export default defineConfig({
       thresholds: {
         100: true,
       },
-      provider: 'v8',
-      include: ['src/**/*.t{s,sx}'],
-      exclude: ['**/*.{types,spec,test}.t{s,sx}', '**/assets/*'],
+      provider: "v8",
+      include: ["src/**/*.t{s,sx}"],
+      exclude: ["**/*.{types,spec,test}.t{s,sx}", "**/assets/*"],
     },
   },
-})
+});
