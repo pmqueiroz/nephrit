@@ -1,8 +1,8 @@
-use kernel::read_file;
 use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
+use utils::read_file;
 
 pub fn get_tokens_path(cwd: &std::path::PathBuf, source: Vec<String>) -> Vec<String> {
-  kernel::glob(cwd, source)
+  utils::glob(cwd, source)
 }
 
 pub fn get_tokens(paths: Vec<String>) -> Vec<String> {
