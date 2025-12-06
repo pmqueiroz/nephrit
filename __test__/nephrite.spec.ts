@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { type Config, Nephrite } from '../index';
-import { setupTokensDir } from './utils/setup-tokens-dir'
+import { setupTokensDir } from './utils/setup-tokens-dir';
 
 let tempDir: string;
 

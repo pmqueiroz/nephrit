@@ -9,11 +9,11 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
+globwalk    = "0.9.1"
+kernel      = { path = "crates/kernel" }
 napi        = "3.0.0"
 napi-derive = "3.0.0"
-kernel = { path = "crates/kernel" }
-rayon = "1.11.0"
-globwalk = "0.9.1"
+rayon       = "1.11.0"
 
 [build-dependencies]
 napi-build = "2"
@@ -23,6 +23,4 @@ lto   = true
 strip = "symbols"
 
 [workspace]
-members = [
-  "crates/kernel"
-]
+members = ["crates/kernel"]
