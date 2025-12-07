@@ -572,5 +572,5 @@ if (!nativeBinding) {
 }
 
 module.exports = nativeBinding
-module.exports.Nephrite = nativeBinding.Nephrite
 module.exports.TransformKind = nativeBinding.TransformKind
+module.exports.Nephrite = nativeBinding.Nephrite

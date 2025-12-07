@@ -11,6 +11,8 @@ crate-type = ["cdylib"]
 [dependencies]
 globwalk    = "0.9.1"
 utils      = { path = "crates/utils" }
+kernel       = { path = "crates/kernel" }
+bindings       = { path = "crates/bindings" }
 napi        = "3.0.0"
 napi-derive = "3.0.0"
 rayon       = "1.11.0"
@@ -23,4 +25,4 @@ lto   = true
 strip = "symbols"
 
 [workspace]
-members = ["crates/utils"]
+members = ["crates/utils", "crates/kernel"]

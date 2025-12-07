@@ -1,0 +1,10 @@
+[package]
+license    = "MIT"
+name       = "kernel"
+repository = "https://github.com/pmqueiroz/nephrite.git"
+version    = "0.1.0"
+
+[dependencies]
+utils      = { path = "../utils" }
+bindings       = { path = "../bindings" }
+rayon       = "1.11.0"

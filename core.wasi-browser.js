@@ -56,5 +56,5 @@ const {
   },
 })
 export default __napiModule.exports
-export const Nephrite = __napiModule.exports.Nephrite
 export const TransformKind = __napiModule.exports.TransformKind
+export const Nephrite = __napiModule.exports.Nephrite

@@ -1,3 +1,6 @@
+extern crate rayon;
+extern crate utils;
+
 use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
 use utils::read_file;
 

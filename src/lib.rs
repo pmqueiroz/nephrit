@@ -1,12 +1,8 @@
 #![deny(clippy::all)]
+use bindings::{action, parser, transform};
+use kernel::{get_tokens, get_tokens_path};
 use napi_derive::napi;
 use std::collections::HashMap;
-
-mod action;
-mod get_tokens;
-mod parser;
-mod token;
-mod transform;
 
 #[napi]
 pub struct Nephrite {
@@ -87,7 +83,7 @@ impl Nephrite {
       None => std::env::current_dir().unwrap(),
     };
 
-    let path = get_tokens::get_tokens_path(&cwd, self.config.source.clone());
-    get_tokens::get_tokens(path)
+    let path = get_tokens_path(&cwd, self.config.source.clone());
+    get_tokens(path)
   }
 }
