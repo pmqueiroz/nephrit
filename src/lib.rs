@@ -1,6 +1,6 @@
 #![deny(clippy::all)]
 use bindings::{action, parser, platform, transform};
-use kernel::{get_tokens_files, get_tokens_files_paths};
+use kernel::{get_tokens_files, get_tokens_files_paths, TokensBucket};
 use log::Logger;
 use napi::bindgen_prelude::Env;
 use napi_derive::napi;
@@ -56,9 +56,10 @@ impl Nephrite {
     Logger::info(&format!("Building for platform: {}", platform_name));
     let tokens_files = self.fetch_tokens_files();
     let parsed_files = kernel::parse_files(tokens_files, &self.parsers, env);
-    for parsed_file in &parsed_files {
-      Logger::debug(&format!("Token file path: {:#?}", parsed_file));
-    }
+
+    let tokens_bucket = TokensBucket::new(parsed_files);
+
+    tokens_bucket.print_tokens();
 
     let platform = self.platforms.get(&platform_name);
 

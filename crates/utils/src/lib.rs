@@ -1,10 +1,7 @@
 mod glob;
+mod is_value_ref;
 mod read_file;
 
-pub fn read_file(path: &str) -> std::io::Result<String> {
-  read_file::read_file(path)
-}
-
-pub fn glob(cwd: &std::path::PathBuf, patterns: Vec<String>) -> Vec<String> {
-  glob::glob(cwd, patterns)
-}
+pub use glob::glob;
+pub use is_value_ref::is_value_ref;
+pub use read_file::read_file;

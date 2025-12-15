@@ -11,11 +11,18 @@ export async function setupTokensDir() {
     path.join(folderPath, 'src', 'tokens', 'button.tokens.json'),
     JSON.stringify(
       {
+        theme: {
+          color: {
+            primary: {
+              value: '#007bff',
+              type: 'color',
+            }
+          },
+        },
         button: {
           primary: {
             background: {
-              value: '#007bff',
-              type: 'color',
+              value: '{theme.color.primary}',
             },
             color: {
               value: '#ffffff',
