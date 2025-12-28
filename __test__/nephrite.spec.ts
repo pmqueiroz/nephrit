@@ -49,15 +49,11 @@ describe('Nephrite', () => {
       nephrite.registerFormat({
         name: 'css/variables',
         format: ({ dictionary }) => {
-
           return dictionary.allTokens
-            .map(
-              (token) =>
-                `--${token.original.path}: ${token.value};`
-            )
+            .map((token) => `--${token.original.path}: ${token.value};`)
             .join('\n');
-        }
-      })
+        },
+      });
 
       nephrite.registerTransform({
         name: 'margin/css/shorthand',

@@ -5,6 +5,6 @@ repository = "https://github.com/pmqueiroz/nephrite.git"
 version    = "0.1.0"
 
 [dependencies]
-globwalk = "0.9.1"
-serde       = { version = "1.0.228", features = ["derive"] }
-serde_json  = "1.0.145"
+globwalk   = "0.9.1"
+serde      = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
