@@ -18,17 +18,17 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: 'pnpm'
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -36,10 +36,25 @@ jobs:
           toolchain: stable
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Create npm dirs
+        run: pnpm napi create-npm-dirs
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+      - name: Move artifacts
+        run: pnpm artifacts
+      - name: List packages
+        run: ls -R ./npm
+        shell: bash
       - name: Build
         run: pnpm run build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
         run: pnpm dlx semantic-release
