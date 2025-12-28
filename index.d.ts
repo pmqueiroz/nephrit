@@ -58,8 +58,8 @@ export declare const enum TransformKind {
   Value = 'Value'
 }
 export declare class Nephrite {
-  constructor(config: Config)
-  getConfig(): Config
+  constructor(config: NephriteConfig)
+  getConfig(): NephriteConfig
   buildPlatform(platformName: string): void
   buildAll(): void
   registerTransform(transform: Transform): void
@@ -68,7 +68,7 @@ export declare class Nephrite {
   registerAction(action: Action): void
 }
 
-export interface Config {
+export interface NephriteConfig {
   source: Array<string>
   cwd?: string
   platforms: Array<Platform>
