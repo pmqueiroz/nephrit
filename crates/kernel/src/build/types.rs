@@ -1,3 +1,3 @@
 use bindings::transform::RegisteredTransform;
 
-pub type TransformersCollection = Vec<RegisteredTransform>;
+pub type TransformersCollection<'transforms> = Vec<&'transforms RegisteredTransform>;

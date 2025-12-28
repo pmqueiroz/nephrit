@@ -47,7 +47,11 @@ describe('Nephrite', () => {
       nephrite.registerTransform({
         name: 'margin/css/shorthand',
         kind: TransformKind.Value,
-        filter: ({ type }) => type === 'margin',
+        filter: (token) => {
+          // check why the actual token value is in snake case
+          // @ts-expect-error
+          return token.original_value.type === 'margin';
+        },
         transform: ({ value }) => {
           const formatMargin = ({
             top,
@@ -56,7 +60,7 @@ describe('Nephrite', () => {
             left,
             vertical,
             horizontal,
-          }: any) => {
+          }: { top?: string; right?: string; bottom?: string; left?: string; vertical?: string; horizontal?: string }) => {
             if (vertical && horizontal)
               return `${vertical} ${horizontal}`.trim();
 

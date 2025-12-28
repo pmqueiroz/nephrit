@@ -1,6 +1,7 @@
 #![deny(clippy::all)]
 use bindings::{
-  action, parser, platform, transform, Actions, Parsers, Platforms, TransformGroups, Transforms,
+  action, parser, platform, transform, Actions, Parsers, Platforms, RegisteredTransforms,
+  TransformGroups,
 };
 use kernel::{get_tokens_files, get_tokens_files_paths, TokensBucket};
 use log::Logger;
@@ -11,7 +12,7 @@ use std::collections::HashMap;
 #[napi]
 pub struct Nephrite<'env> {
   config: Config<'env>,
-  transforms: Transforms,
+  transforms: RegisteredTransforms,
   transform_groups: TransformGroups,
   parsers: Parsers,
   actions: Actions,
@@ -94,7 +95,7 @@ impl<'env> Nephrite<'env> {
 
     match transform_group {
       Some(t) => {
-        let collection = kernel::resolve_transformers(t.clone(), self.transforms.clone());
+        let collection = kernel::resolve_transformers(t.clone(), &self.transforms);
         kernel::build(platform.unwrap().clone(), collection, tokens_bucket, env);
       }
       None => {
@@ -109,7 +110,33 @@ impl<'env> Nephrite<'env> {
   #[napi]
   pub fn register_transform(&mut self, transform: transform::Transform) {
     let name = transform.name.clone();
-    self.transforms.insert(transform.name.clone(), transform);
+    self.transforms.insert(
+      transform.name.clone(),
+      transform::RegisteredTransform {
+        name: transform.name.clone(),
+        kind: transform.kind.clone(),
+        transform: match transform.transform.create_ref() {
+          Ok(transform) => transform,
+          Err(e) => {
+            Logger::error(&format!(
+              "Failed to create transform reference for transform '{}': {:#?}",
+              name, e
+            ));
+            std::process::exit(1);
+          }
+        },
+        filter: match transform.filter.create_ref() {
+          Ok(filter) => filter,
+          Err(e) => {
+            Logger::error(&format!(
+              "Failed to create filter reference for transform '{}': {}",
+              name, e
+            ));
+            std::process::exit(1);
+          }
+        },
+      },
+    );
 
     Logger::info(&format!("Registered transform: {}", name));
   }

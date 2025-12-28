@@ -27,6 +27,15 @@ export async function setupTokensDir() {
           },
         },
         button: {
+          padding: {
+            type: 'margin',
+            value: {
+              top: '8px',
+              right: '9px',
+              bottom: '10px',
+              left: '11px',
+            }
+          },
           primary: {
             background: {
               value: '{theme.color.background}',

@@ -44,8 +44,8 @@ export interface TokenFile {
 export interface Transform {
   name: string
   kind: TransformKind
-  filter: ((token: ResolvedToken) => boolean)
-  transform: ((token: ResolvedToken) => string)
+  filter: (token: ResolvedToken) => boolean
+  transform: (token: ResolvedToken) => string
 }
 
 export interface TransformGroup {

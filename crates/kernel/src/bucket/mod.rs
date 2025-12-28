@@ -114,23 +114,11 @@ impl TokensBucket {
     self.tokens.len()
   }
 
-  pub fn iter(&self) -> impl Iterator<Item = (&String, &ResolvedToken)> {
-    self.tokens.iter()
-  }
-
-  pub fn keys(&self) -> impl Iterator<Item = &String> {
-    self.tokens.keys()
-  }
-
-  pub fn values(&self) -> impl Iterator<Item = &ResolvedToken> {
+  pub fn iter(&self) -> impl Iterator<Item = &ResolvedToken> {
     self.tokens.values()
   }
 
-  pub fn iter_mut(&mut self) -> impl Iterator<Item = (&String, &mut ResolvedToken)> {
-    self.tokens.iter_mut()
-  }
-
-  pub fn values_mut(&mut self) -> impl Iterator<Item = &mut ResolvedToken> {
+  pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut ResolvedToken> {
     self.tokens.values_mut()
   }
 }
@@ -145,11 +133,11 @@ impl IntoIterator for TokensBucket {
 }
 
 impl<'a> IntoIterator for &'a TokensBucket {
-  type Item = (&'a String, &'a ResolvedToken);
-  type IntoIter = std::collections::hash_map::Iter<'a, String, ResolvedToken>;
+  type Item = &'a ResolvedToken;
+  type IntoIter = std::collections::hash_map::Values<'a, String, ResolvedToken>;
 
   fn into_iter(self) -> Self::IntoIter {
-    self.tokens.iter()
+    self.tokens.values()
   }
 }
 

@@ -6,9 +6,9 @@ use napi_derive::napi;
 pub struct Transform {
   pub name: String,
   pub kind: TransformKind,
-  #[napi(ts_type = "((token: ResolvedToken) => boolean)")]
+  #[napi(ts_type = "(token: ResolvedToken) => boolean")]
   pub filter: Function<'static, serde_json::Value, bool>,
-  #[napi(ts_type = "((token: ResolvedToken) => string)")]
+  #[napi(ts_type = "(token: ResolvedToken) => string")]
   pub transform: Function<'static, serde_json::Value, String>,
 }
 
