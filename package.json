@@ -9,12 +9,14 @@
   "license": "MIT",
   "browser": "browser.js",
   "keywords": [
-    "napi-rs",
-    "NAPI",
-    "N-API",
-    "Rust",
-    "node-addon",
-    "node-addon-api"
+    "css",
+    "design-system",
+    "design",
+    "dictionary",
+    "sass",
+    "style-guide",
+    "style",
+    "tokens"
   ],
   "files": [
     "index.d.ts",
