@@ -115,13 +115,3 @@ Cargo.lock
 /npm
 
 .husky/
-
-# Generated
-
-browser.js
-core.wasi-browser.js
-core.wasi.cjs
-index.d.ts
-index.js
-wasi-worker-browser.mjs
-wasi-worker.mjs
