@@ -1,16 +1,13 @@
 import fs from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
 import { Nephrit, NephritLogLevel, TransformKind } from '../index.js';
 
-const tempDir = await setupTokensDir();
-build(tempDir);
-cleanUp(tempDir);
+build();
+logStructure('example/dist');
 
-function build(cwd: string) {
+function build() {
   const nephrit = new Nephrit({
-    source: ['src/tokens/**/*.json'],
-    cwd,
+    source: ['tokens/**/*.json'],
+    cwd: 'example/',
     platforms: [
       {
         name: 'web',
@@ -35,6 +32,15 @@ function build(cwd: string) {
       return dictionary.allTokens
         .map((token) => `--${token.original.path}: ${token.value};`)
         .join('\n');
+    },
+  });
+
+  nephrit.registerTransform({
+    name: 'css/variables',
+    kind: TransformKind.Attribute,
+    filter: () => true,
+    transform: ({ name }) => {
+      return `--${name}`;
     },
   });
 
@@ -105,7 +111,7 @@ function build(cwd: string) {
   nephrit.buildAll();
 }
 
-async function cleanUp(dir: string, prefix = '') {
+async function logStructure(dir: string, prefix = '') {
   const items = await fs.readdir(dir, { withFileTypes: true });
   let output = '';
 
@@ -114,7 +120,7 @@ async function cleanUp(dir: string, prefix = '') {
 
     if (item.isDirectory()) {
       output += `${prefix}📁 ${item.name}/\n`;
-      output += await cleanUp(fullPath, `${prefix}  `);
+      output += await logStructure(fullPath, `${prefix}  `);
     } else {
       output += `${prefix}📄 ${item.name}\n`;
     }
@@ -122,19 +128,7 @@ async function cleanUp(dir: string, prefix = '') {
 
   if (prefix === '') {
     console.log(output.trimEnd());
-    await fs.rm(dir, { recursive: true, force: true });
   }
 
   return output;
-}
-
-async function setupTokensDir() {
-  const tmpdir = path.join(os.tmpdir(), 'nephrit-test-');
-  const folderPath = await fs.mkdtemp(tmpdir);
-  await fs.mkdir(path.join(folderPath, 'src', 'tokens'), { recursive: true });
-  await fs.cp('example/tokens/', path.join(folderPath, 'src', 'tokens'), {
-    recursive: true,
-  });
-
-  return folderPath;
 }

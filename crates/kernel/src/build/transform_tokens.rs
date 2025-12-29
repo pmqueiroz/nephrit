@@ -34,14 +34,22 @@ pub fn transform_tokens<'transforms>(
               let transformed_result = transform_func.call(token_json);
               match transformed_result {
                 Ok(transformed_code) => {
-                  transformed_tokens.insert(
-                    token.path.clone(),
-                    TransformedToken {
-                      original: token.clone(),
-                      value: transformed_code,
-                      name: token.name.clone(),
-                    },
-                  );
+                  let mut transformed_token = TransformedToken {
+                    original: token.clone(),
+                    value: serde_json::to_string(&token.value).unwrap_or_default(),
+                    name: token.name.clone(),
+                  };
+
+                  match transformer.kind {
+                    bindings::transform::TransformKind::Attribute => {
+                      transformed_token.name = transformed_code
+                    }
+                    bindings::transform::TransformKind::Value => {
+                      transformed_token.value = transformed_code
+                    }
+                  }
+
+                  transformed_tokens.insert(token.path.clone(), transformed_token);
                 }
                 Err(e) => {
                   Logger::error(&format!(
