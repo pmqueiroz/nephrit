@@ -8,7 +8,8 @@
   "files": {
     "ignoreUnknown": false,
     "includes": [
-      "**/*.spec.ts",
+      "**/*.ts",
+      "**/*.js",
       "!*.d.ts",
       "!target",
       "!index.js",

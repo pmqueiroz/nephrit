@@ -8,19 +8,19 @@ module.exports = {
     {
       name: 'rc',
       prerelease: true,
-    }
+    },
   ],
   plugins: [
     [
       '@semantic-release/commit-analyzer',
       {
-        preset: 'conventionalcommits'
+        preset: 'conventionalcommits',
       },
     ],
     [
       '@semantic-release/release-notes-generator',
       {
-        preset: 'conventionalcommits'
+        preset: 'conventionalcommits',
       },
     ],
     [
@@ -30,19 +30,17 @@ module.exports = {
       },
     ],
     [
-      '@semantic-release/npm',
+      '@semantic-release/git',
       {
-        npmPublish: true,
+        assets: ['CHANGELOG.md', 'package.json'],
+        message:
+          'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
     [
-      '@semantic-release/git',
+      '@semantic-release/npm',
       {
-        assets: [
-          'CHANGELOG.md',
-        ],
-        message:
-          'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+        npmPublish: true,
       },
     ],
     [
@@ -61,4 +59,4 @@ module.exports = {
       },
     ],
   ],
-}
+};

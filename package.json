@@ -64,7 +64,7 @@
     "prepublishOnly": "napi prepublish -t npm --no-gh-release",
     "test": "vitest --coverage --run",
     "test:local": "vitest --coverage",
-    "preversion": "napi build --platform && git add .",
+    "preversion": "napi build --platform",
     "version": "napi version"
   },
   "devDependencies": {
