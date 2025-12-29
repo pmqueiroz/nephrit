@@ -22,4 +22,5 @@ pub struct ResolvedToken {
 pub struct TransformedToken {
   pub original: ResolvedToken,
   pub value: String,
+  pub name: String,
 }

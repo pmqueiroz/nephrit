@@ -66,6 +66,7 @@ export interface Transform {
 export interface TransformedToken {
   original: ResolvedToken
   value: string
+  name: string
 }
 
 export interface TransformGroup {

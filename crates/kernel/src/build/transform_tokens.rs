@@ -39,6 +39,7 @@ pub fn transform_tokens<'transforms>(
                     TransformedToken {
                       original: token.clone(),
                       value: transformed_code,
+                      name: token.name.clone(),
                     },
                   );
                 }
