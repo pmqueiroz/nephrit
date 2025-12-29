@@ -4,10 +4,33 @@ use chromalog::{
   debug, error, info, trace, warn, ArgColor, ChromaLog, Color, ColorConfig, LevelFilter,
 };
 
+#[derive(Debug, Clone, Copy)]
+pub enum LogLevel {
+  Off,
+  Error,
+  Warn,
+  Info,
+  Debug,
+  Trace,
+}
+
+impl LogLevel {
+  fn to_chromalog_level(self) -> LevelFilter {
+    match self {
+      LogLevel::Off => LevelFilter::Off,
+      LogLevel::Error => LevelFilter::Error,
+      LogLevel::Warn => LevelFilter::Warn,
+      LogLevel::Info => LevelFilter::Info,
+      LogLevel::Debug => LevelFilter::Debug,
+      LogLevel::Trace => LevelFilter::Trace,
+    }
+  }
+}
+
 pub struct Logger;
 
 impl Logger {
-  pub fn init() {
+  pub fn init(level: LogLevel) {
     let custom_colors = ColorConfig {
       error_color: Color::Red,
       warn_color: Color::BrightYellow,
@@ -19,7 +42,7 @@ impl Logger {
       datetime_color: None,
     };
 
-    let result = ChromaLog::init(LevelFilter::Trace, custom_colors, None);
+    let result = ChromaLog::init(level.to_chromalog_level(), custom_colors, None);
 
     match result {
       Ok(_) => (),

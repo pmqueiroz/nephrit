@@ -91,4 +91,14 @@ export interface NephriteConfig {
   source: Array<string>
   cwd?: string
   platforms: Array<Platform>
+  logLevel?: NephritLogLevel
+}
+
+export declare const enum NephritLogLevel {
+  Off = 0,
+  Error = 1,
+  Warn = 2,
+  Info = 3,
+  Debug = 4,
+  Trace = 5
 }

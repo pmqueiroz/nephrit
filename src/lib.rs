@@ -1,10 +1,12 @@
 #![deny(clippy::all)]
+mod log_level;
 use bindings::{
   action, parser, platform, transform, Actions, Format, Parsers, Platforms, RegisteredFormat,
   RegisteredFormats, RegisteredTransforms, TransformGroups,
 };
 use kernel::{get_tokens_files, get_tokens_files_paths, TokensBucket};
 use log::Logger;
+use log_level::NephritLogLevel;
 use napi::bindgen_prelude::Env;
 use napi_derive::napi;
 use std::collections::HashMap;
@@ -26,13 +28,16 @@ pub struct NephriteConfig<'platform> {
   pub source: Vec<String>,
   pub cwd: Option<String>,
   pub platforms: Vec<platform::Platform<'platform>>,
+  pub log_level: Option<NephritLogLevel>,
 }
 
 #[napi]
 impl<'env> Nephrit<'env> {
   #[napi(constructor)]
   pub fn new(config: NephriteConfig<'env>) -> Self {
-    Logger::init();
+    Logger::init(NephritLogLevel::to_logger_log_level(
+      config.log_level.clone(),
+    ));
 
     let mut platforms = HashMap::new();
 

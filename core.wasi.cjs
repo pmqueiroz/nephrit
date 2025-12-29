@@ -110,3 +110,4 @@ const { instance: __napiInstance, module: __wasiModule, napiModule: __napiModule
 module.exports = __napiModule.exports
 module.exports.TransformKind = __napiModule.exports.TransformKind
 module.exports.Nephrit = __napiModule.exports.Nephrit
+module.exports.NephritLogLevel = __napiModule.exports.NephritLogLevel
