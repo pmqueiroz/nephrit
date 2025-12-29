@@ -1,3 +1,6 @@
 onlyBuiltDependencies:
   - esbuild
   - lefthook
+
+patchedDependencies:
+  semantic-release: patches/semantic-release.patch
