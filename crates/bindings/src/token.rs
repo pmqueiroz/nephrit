@@ -13,6 +13,7 @@ pub struct ResolvedToken {
   pub path: String,
   #[napi(ts_type = "Token")]
   pub original_value: serde_json::Value,
+  pub name: String,
   pub value: serde_json::Value,
 }
 

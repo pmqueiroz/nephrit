@@ -8,6 +8,7 @@ pre-commit:
   jobs:
     - run: pnpm exec biome check --write {staged_files}
       glob: "*.{js,ts,jsx,tsx}"
+      exclude: "*.d.ts"
       stage_fixed: true
 
     - run: pnpm exec taplo format {staged_files}

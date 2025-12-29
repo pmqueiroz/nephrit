@@ -42,6 +42,7 @@ export interface PlatformFile {
 export interface ResolvedToken {
   path: string
   originalValue: Token
+  name: string
   value: any
 }
 

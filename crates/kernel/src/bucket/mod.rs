@@ -1,8 +1,10 @@
+use self::generate_name::generate_name_from_path;
 use self::merge_tokens::merge_tokens;
 use bindings::token::ResolvedToken;
 use log::Logger;
 use std::collections::HashMap;
 
+mod generate_name;
 mod merge_tokens;
 mod token_ref;
 
@@ -49,6 +51,7 @@ impl TokensBucket {
           {
             let resolved_token = ResolvedToken {
               path: token.path.clone(),
+              name: token.name.clone(),
               original_value: token.original_value.clone(),
               value: resolved_value,
             };
@@ -83,6 +86,7 @@ impl TokensBucket {
             let token_value = obj.get("value").or_else(|| obj.get("$value")).unwrap();
 
             let token = ResolvedToken {
+              name: generate_name_from_path(&prefix),
               path: prefix.clone(),
               value: token_value.clone(),
               original_value: serde_json::Value::Object(obj.clone()),
