@@ -48,7 +48,7 @@ impl<'env> Nephrit<'env> {
     Self {
       config: Config {
         source: config.source,
-        cwd: config.cwd.map(|p| std::path::PathBuf::from(p)),
+        cwd: config.cwd.map(std::path::PathBuf::from),
         platforms: config.platforms,
       },
       transforms: HashMap::new(),

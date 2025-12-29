@@ -1,3 +1,8 @@
+pre-push:
+  jobs:
+    - name: lint
+      run: pnpm lint
+
 pre-commit:
   parallel: true
   jobs:
