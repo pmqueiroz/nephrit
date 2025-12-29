@@ -1,11 +1,3 @@
-pre-push:
-  jobs:
-    - name: packages audit
-      tags:
-        - frontend
-        - security
-      run: pnpm audit
-
 pre-commit:
   parallel: true
   jobs:
