@@ -75,8 +75,6 @@ impl<'env> Nephrit<'env> {
 
   #[napi]
   pub fn build_all(&self, env: &Env) {
-    Logger::info("Building all platforms in parallel");
-
     let tokens_bucket = self.generate_bucket(env);
 
     let platform_names: Vec<String> = self.platforms.keys().cloned().collect();
@@ -84,11 +82,10 @@ impl<'env> Nephrit<'env> {
     platform_names.iter().for_each(|platform_name| {
       self.build_single_platform(platform_name, &tokens_bucket, env);
     });
-
-    Logger::info("All platforms built successfully");
   }
 
   fn build_single_platform(&self, platform_name: &str, tokens_bucket: &TokensBucket, env: &Env) {
+    Logger::info(&format!("Building platform: {}", platform_name));
     let platform = match self.platforms.get(platform_name) {
       Some(p) => p,
       None => {
@@ -151,7 +148,7 @@ impl<'env> Nephrit<'env> {
       },
     );
 
-    Logger::info(&format!("Registered transform: {}", name));
+    Logger::debug(&format!("Registered transform: {}", name));
   }
 
   #[napi]
@@ -161,7 +158,7 @@ impl<'env> Nephrit<'env> {
       .transform_groups
       .insert(transform_group.name.clone(), transform_group);
 
-    Logger::info(&format!("Registered transform group: {}", name));
+    Logger::debug(&format!("Registered transform group: {}", name));
   }
 
   #[napi]
@@ -183,14 +180,14 @@ impl<'env> Nephrit<'env> {
     };
     self.parsers.push(registered_parser);
 
-    Logger::info(&format!("Registered parser: {}", name));
+    Logger::debug(&format!("Registered parser: {}", name));
   }
 
   #[napi]
   pub fn register_action(&mut self, action: action::Action) {
     let name = action.name.clone();
     self.actions.insert(action.name.clone(), action);
-    Logger::info(&format!("Registered action: {}", name));
+    Logger::debug(&format!("Registered action: {}", name));
   }
 
   #[napi]
@@ -213,7 +210,7 @@ impl<'env> Nephrit<'env> {
       },
     );
 
-    Logger::info(&format!("Registered format: {}", name));
+    Logger::debug(&format!("Registered format: {}", name));
   }
 
   fn fetch_tokens_files(&self) -> Vec<bindings::parser::TokenFile> {

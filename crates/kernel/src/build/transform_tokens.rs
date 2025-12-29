@@ -14,7 +14,7 @@ pub fn transform_tokens<'transforms>(
   let mut transformed_tokens: HashMap<String, TransformedToken> = HashMap::new();
 
   for transformer in collection {
-    Logger::info(&format!("Applying transformer: {}", transformer.name));
+    Logger::debug(&format!("Applying transformer: {}", transformer.name));
     for token in bucket.iter() {
       if let Ok(filter_func) = transformer.filter.borrow_back(env) {
         let token_ref = match transformed_tokens.get(&token.path) {

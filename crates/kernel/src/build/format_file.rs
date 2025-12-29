@@ -24,10 +24,7 @@ pub fn format_file(
     if let Ok(file_content) = file_result {
       match write_file_to_destination(&destination, &file_content) {
         Ok(_) => {
-          Logger::info(&format!(
-            "Successfully wrote formatted content to '{}'",
-            destination
-          ));
+          Logger::info(&format!("✔︎ {}", destination));
         }
         Err(e) => {
           Logger::error(&format!("Failed to write file '{}': {}", destination, e));
