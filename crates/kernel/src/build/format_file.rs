@@ -2,17 +2,18 @@ use bindings::{Dictionary, FormatArguments, RegisteredFormat};
 use log::Logger;
 use napi::Env;
 use std::fs;
-use std::path::Path;
+
+use crate::build::types::Destination;
 
 pub fn format_file(
   env: &Env,
-  destination: String,
+  destination: Destination,
   format: &RegisteredFormat,
   dictionary: &Dictionary,
 ) {
   Logger::debug(&format!(
     "Processing platform file: destination='{}', format='{}', using dictionary with {} entries",
-    destination,
+    destination.path.display(),
     format.name,
     dictionary.all_tokens.len()
   ));
@@ -22,33 +23,40 @@ pub fn format_file(
       dictionary: dictionary.clone(),
     });
     if let Ok(file_content) = file_result {
-      match write_file_to_destination(&destination, &file_content) {
+      match write_file_to_destination(&destination.path, &file_content) {
         Ok(_) => {
-          Logger::info(&format!("✔︎ {}", destination));
+          Logger::info(&format!("✔︎ {}", destination.name));
         }
         Err(e) => {
-          Logger::error(&format!("Failed to write file '{}': {}", destination, e));
+          Logger::error(&format!(
+            "Failed to write file '{}': {}",
+            destination.path.display(),
+            e
+          ));
           std::process::exit(1);
         }
       }
     } else {
       Logger::error(&format!(
         "Format function '{}' failed to generate content for '{}'",
-        format.name, destination
+        format.name, destination.name
       ));
       std::process::exit(1);
     }
   } else {
     Logger::error(&format!(
       "Failed to borrow format function '{}' for '{}'",
-      format.name, destination
+      format.name, destination.name
     ));
     std::process::exit(1);
   }
 }
 
-fn write_file_to_destination(destination: &str, content: &str) -> Result<(), std::io::Error> {
-  if let Some(parent) = Path::new(destination).parent() {
+fn write_file_to_destination(
+  destination: &std::path::PathBuf,
+  content: &str,
+) -> Result<(), std::io::Error> {
+  if let Some(parent) = destination.parent() {
     fs::create_dir_all(parent)?;
   }
 

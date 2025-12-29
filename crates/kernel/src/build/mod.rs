@@ -35,7 +35,11 @@ pub fn build<'build>(
       }
     };
 
-    let destination = get_file_path(&config.cwd, file.destination.clone());
+    let destination = get_file_path(
+      &config.cwd,
+      platform.build_path.clone(),
+      file.destination.clone(),
+    );
 
     format_file::format_file(env, destination, format, &dictionary);
   }
