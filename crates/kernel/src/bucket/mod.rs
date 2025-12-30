@@ -1,5 +1,5 @@
 use self::merge_tokens::merge_tokens;
-use bindings::token::ResolvedToken;
+use bindings::{parser::ParsedFile, token::ResolvedToken};
 use log::Logger;
 use std::collections::HashMap;
 
@@ -12,7 +12,7 @@ pub struct TokensBucket {
 }
 
 impl TokensBucket {
-  pub fn new(raw_tokens: Vec<serde_json::Value>) -> Self {
+  pub fn new(raw_tokens: Vec<ParsedFile>) -> Self {
     let mut resolved_tokens = HashMap::new();
     let mut tokens_with_references = HashMap::new();
 
@@ -70,13 +70,13 @@ impl TokensBucket {
   }
 
   fn flatten(
-    values: Vec<serde_json::Value>,
+    values: Vec<ParsedFile>,
     prefix: Vec<String>,
     resolved_map: &mut HashMap<String, ResolvedToken>,
     references_map: &mut HashMap<String, ResolvedToken>,
   ) {
     for value in values {
-      match value {
+      match value.content {
         serde_json::Value::Object(obj) => {
           if obj.contains_key("value") || obj.contains_key("$value") {
             let token_value = obj.get("value").or_else(|| obj.get("$value")).unwrap();
@@ -89,8 +89,7 @@ impl TokensBucket {
               path: prefix.clone(),
               value: token_value.clone(),
               original_value: serde_json::Value::Object(obj.clone()),
-              // @TODO set proper file path
-              file_path: "".into(),
+              file_path: value.path.clone(),
             };
 
             if token_ref::is_value_ref(token_value) {
@@ -107,7 +106,15 @@ impl TokensBucket {
                 p.insert(prefix.len(), key);
                 p
               };
-              Self::flatten(vec![val], new_prefix, resolved_map, references_map);
+              Self::flatten(
+                vec![ParsedFile {
+                  content: val,
+                  path: value.path.clone(),
+                }],
+                new_prefix,
+                resolved_map,
+                references_map,
+              );
             }
           }
         }

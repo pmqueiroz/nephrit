@@ -3,6 +3,7 @@ extern crate log;
 extern crate napi;
 extern crate rayon;
 extern crate utils;
+use bindings::parser::ParsedFile;
 use napi::bindgen_prelude::Env;
 
 use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
@@ -42,7 +43,7 @@ pub fn parse_files(
   files: Vec<bindings::parser::TokenFile>,
   parsers: &[bindings::parser::RegisteredParser],
   env: &Env,
-) -> Vec<serde_json::Value> {
+) -> Vec<ParsedFile> {
   files
     .iter()
     .map(|file| {
@@ -52,14 +53,23 @@ pub fn parse_files(
           let json_result = parser_func.call(file.clone());
           if let Ok(json_string) = json_result {
             if let Ok(json_value) = serde_json::from_str(&json_string) {
-              return json_value;
+              return ParsedFile {
+                path: file.path.clone(),
+                content: json_value,
+              };
             }
           }
         }
 
-        serde_json::Value::Null
+        ParsedFile {
+          path: file.path.clone(),
+          content: serde_json::Value::Null,
+        }
       } else {
-        serde_json::Value::Null
+        ParsedFile {
+          path: file.path.clone(),
+          content: serde_json::Value::Null,
+        }
       }
     })
     .collect()
