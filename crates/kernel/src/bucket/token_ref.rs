@@ -11,10 +11,9 @@ pub fn resolve_value_ref(
   value: &serde_json::Value,
   resolved_tokens: &std::collections::HashMap<String, ResolvedToken>,
 ) -> Option<serde_json::Value> {
-  if let serde_json::Value::String(s) = value {
+  if let serde_json::Value::String(key) = value {
     if is_value_ref(value) {
-      let key = s.trim_start_matches('{').trim_end_matches('}').to_string();
-      if let Some(token) = resolved_tokens.get(&key) {
+      if let Some(token) = resolved_tokens.get(&key.to_string()) {
         return Some(token.value.clone());
       }
     }

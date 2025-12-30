@@ -1,10 +1,8 @@
-use self::generate_name::generate_name_from_key;
 use self::merge_tokens::merge_tokens;
 use bindings::token::ResolvedToken;
 use log::Logger;
 use std::collections::HashMap;
 
-mod generate_name;
 mod merge_tokens;
 mod token_ref;
 
@@ -20,7 +18,7 @@ impl TokensBucket {
 
     Self::flatten(
       raw_tokens.clone(),
-      "".into(),
+      Vec::new(),
       &mut resolved_tokens,
       &mut tokens_with_references,
     );
@@ -73,7 +71,7 @@ impl TokensBucket {
 
   fn flatten(
     values: Vec<serde_json::Value>,
-    prefix: String,
+    prefix: Vec<String>,
     resolved_map: &mut HashMap<String, ResolvedToken>,
     references_map: &mut HashMap<String, ResolvedToken>,
   ) {
@@ -83,11 +81,12 @@ impl TokensBucket {
           if obj.contains_key("value") || obj.contains_key("$value") {
             let token_value = obj.get("value").or_else(|| obj.get("$value")).unwrap();
 
+            let key = format!("{{{}}}", prefix.join("."));
+
             let token = ResolvedToken {
-              name: generate_name_from_key(&prefix),
-              key: prefix.clone(),
-              // @TODO set proper path
-              path: Vec::new(),
+              name: prefix.join("-"),
+              key: key.clone(),
+              path: prefix.clone(),
               value: token_value.clone(),
               original_value: serde_json::Value::Object(obj.clone()),
               // @TODO set proper file path
@@ -95,16 +94,18 @@ impl TokensBucket {
             };
 
             if token_ref::is_value_ref(token_value) {
-              references_map.insert(prefix.clone(), token);
+              references_map.insert(key.clone(), token);
             } else {
-              resolved_map.insert(prefix.clone(), token);
+              resolved_map.insert(key.clone(), token);
             }
           } else {
             for (key, val) in obj {
               let new_prefix = if prefix.is_empty() {
-                key.clone()
+                vec![key.clone()]
               } else {
-                format!("{}.{}", prefix, key)
+                let mut p = prefix.clone();
+                p.insert(prefix.len(), key);
+                p
               };
               Self::flatten(vec![val], new_prefix, resolved_map, references_map);
             }
@@ -112,7 +113,7 @@ impl TokensBucket {
         }
         _ => {
           Logger::warn(&format!(
-            "Ignored unterminated token at path '{}': {:?}",
+            "Ignored unterminated token at path '{:#?}': {:?}",
             prefix, value
           ));
         }

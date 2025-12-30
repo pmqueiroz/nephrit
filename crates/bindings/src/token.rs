@@ -63,7 +63,7 @@ impl TransformedToken {
     };
 
     Self {
-      key: resolved_token.name.clone(),
+      key: resolved_token.key.clone(),
       value: formatted_value,
       file_path: resolved_token.file_path.clone(),
       is_source: true,

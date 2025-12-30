@@ -81,7 +81,7 @@ export interface TransformGroup {
 }
 
 export declare const enum TransformKind {
-  Attribute = 'Attribute',
+  Name = 'Name',
   Value = 'Value'
 }
 export declare class Nephrit {

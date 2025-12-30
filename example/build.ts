@@ -38,7 +38,7 @@ function build() {
 
   nephrit.registerTransform({
     name: 'css/variables',
-    kind: TransformKind.Attribute,
+    kind: TransformKind.Name,
     filter: () => true,
     transform: (token) => {
       const { name } = token;
