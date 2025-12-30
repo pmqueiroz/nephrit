@@ -27,8 +27,13 @@ pub struct TransformedToken {
 
 impl TransformedToken {
   pub fn from_resolved_token(resolved_token: &ResolvedToken) -> Self {
+    let formatted_value = match &resolved_token.value {
+      serde_json::Value::String(s) => s.clone(),
+      _ => resolved_token.value.to_string(),
+    };
+
     Self {
-      value: resolved_token.value.to_string(),
+      value: formatted_value,
       name: resolved_token.name.clone(),
       original: resolved_token.clone(),
     }

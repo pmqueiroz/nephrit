@@ -29,7 +29,7 @@ function build() {
     name: 'css/variables',
     format: ({ dictionary }) => {
       const tokens = dictionary.allTokens
-        .map((token) => `\t--${token.name}: ${token.value};`)
+        .map((token) => `\t${token.name}: ${token.value};`)
         .join('\n');
 
       return `.design-system {\n${tokens}\n}`;
@@ -88,7 +88,7 @@ function build() {
 
   nephrit.registerTransformGroup({
     name: 'web-group',
-    transforms: ['margin/css/shorthand'],
+    transforms: ['margin/css/shorthand', 'css/variables'],
   });
 
   nephrit.registerParser({

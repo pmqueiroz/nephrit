@@ -19,7 +19,7 @@ pub fn transform_tokens<'transforms>(
       if let Ok(filter_func) = transformer.filter.borrow_back(env) {
         let token_ref = match transformed_tokens.get(&token.path) {
           Some(t) => t.clone(),
-          None => TransformedToken::from_resolved_token(&token),
+          None => TransformedToken::from_resolved_token(token),
         };
 
         let token_json = serde_json::to_value(token_ref).unwrap_or(serde_json::Value::Null);
@@ -34,11 +34,7 @@ pub fn transform_tokens<'transforms>(
               let transformed_result = transform_func.call(token_json);
               match transformed_result {
                 Ok(transformed_code) => {
-                  let mut transformed_token = TransformedToken {
-                    original: token.clone(),
-                    value: serde_json::to_string(&token.value).unwrap_or_default(),
-                    name: token.name.clone(),
-                  };
+                  let mut transformed_token = TransformedToken::from_resolved_token(token);
 
                   match transformer.kind {
                     bindings::transform::TransformKind::Attribute => {
