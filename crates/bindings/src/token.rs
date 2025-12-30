@@ -18,9 +18,19 @@ pub struct ResolvedToken {
 }
 
 #[napi(object)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize)]
 pub struct TransformedToken {
   pub original: ResolvedToken,
   pub value: String,
   pub name: String,
+}
+
+impl TransformedToken {
+  pub fn from_resolved_token(resolved_token: &ResolvedToken) -> Self {
+    Self {
+      value: resolved_token.value.to_string(),
+      name: resolved_token.name.clone(),
+      original: resolved_token.clone(),
+    }
+  }
 }

@@ -18,8 +18,8 @@ pub fn transform_tokens<'transforms>(
     for token in bucket.iter() {
       if let Ok(filter_func) = transformer.filter.borrow_back(env) {
         let token_ref = match transformed_tokens.get(&token.path) {
-          Some(t) => t.original.clone(),
-          None => token.clone(),
+          Some(t) => t.clone(),
+          None => TransformedToken::from_resolved_token(&token),
         };
 
         let token_json = serde_json::to_value(token_ref).unwrap_or(serde_json::Value::Null);

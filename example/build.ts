@@ -28,10 +28,11 @@ function build() {
   nephrit.registerFormat({
     name: 'css/variables',
     format: ({ dictionary }) => {
-      console.log(JSON.stringify(dictionary, null, 2));
-      return dictionary.allTokens
-        .map((token) => `--${token.original.path}: ${token.value};`)
+      const tokens = dictionary.allTokens
+        .map((token) => `\t--${token.name}: ${token.value};`)
         .join('\n');
+
+      return `.design-system {\n${tokens}\n}`;
     },
   });
 
@@ -50,9 +51,9 @@ function build() {
     filter: (token) => {
       // check why the actual token value is in snake case
       // @ts-expect-error
-      return token.original_value.type === 'margin';
+      return token.original.original_value.type === 'margin';
     },
-    transform: ({ value }) => {
+    transform: ({ original: { value } }) => {
       const formatMargin = ({
         top,
         right,
