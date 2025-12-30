@@ -1,3 +1,9 @@
+## 1.3.0 (2025-12-30)
+
+* feat: use real transformed token value ([97ea9d6](https://github.com/pmqueiroz/nephrit/commit/97ea9d6))
+* fix: pipe transformations ([7d785c2](https://github.com/pmqueiroz/nephrit/commit/7d785c2))
+* fix: prevent quoting string values ([d8108b6](https://github.com/pmqueiroz/nephrit/commit/d8108b6))
+
 ## 1.2.0 (2025-12-30)
 
 * feat: add name to resolved token ([81d1992](https://github.com/pmqueiroz/nephrit/commit/81d1992))
