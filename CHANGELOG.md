@@ -1,3 +1,10 @@
+## 1.4.0 (2025-12-30)
+
+* chore: remove example print ([0ab38c0](https://github.com/pmqueiroz/nephrit/commit/0ab38c0))
+* feat: add proper file path ([4bc5164](https://github.com/pmqueiroz/nephrit/commit/4bc5164))
+* feat: add tranform tokens missing fields ([2cc6f7d](https://github.com/pmqueiroz/nephrit/commit/2cc6f7d))
+* feat: proper token path and key ([12f7b4e](https://github.com/pmqueiroz/nephrit/commit/12f7b4e))
+
 ## 1.3.0 (2025-12-30)
 
 * feat: use real transformed token value ([97ea9d6](https://github.com/pmqueiroz/nephrit/commit/97ea9d6))
