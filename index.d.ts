@@ -20,6 +20,11 @@ export interface FormatArguments {
   dictionary: Dictionary
 }
 
+export interface OriginalToken {
+  type: string
+  value: string
+}
+
 export interface Parser {
   name: string
   pattern: string
@@ -39,16 +44,12 @@ export interface PlatformFile {
   format: string
 }
 
-export interface ResolvedToken {
-  path: string
-  originalValue: Token
-  name: string
-  value: any
-}
-
-export interface Token {
-  type: string
-  value: string
+export interface TokenAttrs {
+  category?: string
+  type?: string
+  item?: string
+  subitem?: string
+  state?: string
 }
 
 export interface TokenFile {
@@ -64,9 +65,14 @@ export interface Transform {
 }
 
 export interface TransformedToken {
-  original: ResolvedToken
+  key: string
   value: string
-  name: string
+  filePath: string
+  isSource: boolean
+original: OriginalToken & { [k: string]: any }
+name: string
+attributes: TokenAttrs
+path: Array<string>
 }
 
 export interface TransformGroup {

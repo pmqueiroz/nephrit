@@ -40,7 +40,11 @@ function build() {
     name: 'css/variables',
     kind: TransformKind.Attribute,
     filter: () => true,
-    transform: ({ name }) => {
+    transform: (token) => {
+      const { name } = token;
+
+      console.log(JSON.stringify(token, null, 2));
+
       return `--${name}`;
     },
   });
@@ -49,7 +53,7 @@ function build() {
     name: 'margin/css/shorthand',
     kind: TransformKind.Value,
     filter: (token) => {
-      return token.original.originalValue.type === 'margin';
+      return token.original.type === 'margin';
     },
     transform: ({ original: { value } }) => {
       const formatMargin = ({

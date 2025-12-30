@@ -22,7 +22,7 @@ pub struct RegisteredTransform {
 #[napi(string_enum)]
 #[derive(Clone)]
 pub enum TransformKind {
-  Attribute,
+  Name,
   Value,
 }
 

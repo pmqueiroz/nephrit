@@ -1,4 +1,4 @@
-use self::generate_name::generate_name_from_path;
+use self::generate_name::generate_name_from_key;
 use self::merge_tokens::merge_tokens;
 use bindings::token::ResolvedToken;
 use log::Logger;
@@ -49,12 +49,10 @@ impl TokensBucket {
         if let Some(token) = tokens_with_references.get(&key) {
           if let Some(resolved_value) = token_ref::resolve_value_ref(&token.value, resolved_tokens)
           {
-            let resolved_token = ResolvedToken {
-              path: token.path.clone(),
-              name: token.name.clone(),
-              original_value: token.original_value.clone(),
-              value: resolved_value,
-            };
+            let mut resolved_token = token.clone();
+
+            resolved_token.value = resolved_value;
+
             resolved_tokens.insert(key.clone(), resolved_token);
             tokens_with_references.remove(&key);
           }
@@ -86,10 +84,14 @@ impl TokensBucket {
             let token_value = obj.get("value").or_else(|| obj.get("$value")).unwrap();
 
             let token = ResolvedToken {
-              name: generate_name_from_path(&prefix),
-              path: prefix.clone(),
+              name: generate_name_from_key(&prefix),
+              key: prefix.clone(),
+              // @TODO set proper path
+              path: Vec::new(),
               value: token_value.clone(),
               original_value: serde_json::Value::Object(obj.clone()),
+              // @TODO set proper file path
+              file_path: "".into(),
             };
 
             if token_ref::is_value_ref(token_value) {

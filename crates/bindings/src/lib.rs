@@ -17,6 +17,6 @@ pub use dictionary::*;
 pub use format::*;
 pub use parser::Parser;
 pub use platform::Platform;
-pub use token::Token;
+pub use token::OriginalToken;
 pub use transform::{Transform, TransformGroup};
 pub use types::*;

@@ -17,7 +17,7 @@ pub fn transform_tokens<'transforms>(
     Logger::debug(&format!("Applying transformer: {}", transformer.name));
     for token in bucket.iter() {
       if let Ok(filter_func) = transformer.filter.borrow_back(env) {
-        let token_ref = match transformed_tokens.get(&token.path) {
+        let token_ref = match transformed_tokens.get(&token.key) {
           Some(t) => t.clone(),
           None => TransformedToken::from_resolved_token(token),
         };
@@ -27,7 +27,7 @@ pub fn transform_tokens<'transforms>(
           if boolean {
             Logger::debug(&format!(
               "Transformer '{}' matched token: {}",
-              transformer.name, token.path
+              transformer.name, token.key
             ));
             if let Ok(transform_func) = transformer.transform.borrow_back(env) {
               let transformed_result = transform_func.call(token_ref.clone());
@@ -36,7 +36,7 @@ pub fn transform_tokens<'transforms>(
                   let mut transformed_token = token_ref.clone();
 
                   match transformer.kind {
-                    bindings::transform::TransformKind::Attribute => {
+                    bindings::transform::TransformKind::Name => {
                       transformed_token.name = transformed_code
                     }
                     bindings::transform::TransformKind::Value => {
@@ -44,7 +44,7 @@ pub fn transform_tokens<'transforms>(
                     }
                   }
 
-                  transformed_tokens.insert(token.path.clone(), transformed_token);
+                  transformed_tokens.insert(token.key.clone(), transformed_token);
                 }
                 Err(e) => {
                   Logger::error(&format!(
